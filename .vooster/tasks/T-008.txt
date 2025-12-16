@@ -1,0 +1,27 @@
+# MVP용 임시 백엔드 또는 정적 데이터 관리
+
+**Task ID:** T-008
+**Status:** BACKLOG
+**Importance:** SHOULD
+**Complexity:** 4/10
+**Urgency:** 6/10
+**Dependencies:** T-003
+
+## Description
+
+### 요구사항
+- 초기 POI 데이터를 정적 JSON으로 관리
+- 필요시 Node.js/Express API로 변환
+### 구현 세부사항
+- 정적 파일 호스팅 또는 간단한 Express 서버 구성
+- API 엔드포인트 GET /api/poi 구현
+- CORS 및 환경변수 관리
+### 테스트 전략
+- 정적 JSON 요청 시 데이터 응답 확인
+- Express 서버 엔드포인트 단위 테스트
+- 로컬 및 배포 환경에서 데이터 동작 검증
+
+---
+
+**Created:** 2025-12-15T05:17:50.484Z
+**Updated:** 2025-12-15T05:17:50.484Z

@@ -1,0 +1,86 @@
+{
+  "totalCount": 8,
+  "downloadedAt": "2025-12-15T05:19:45.118Z",
+  "tasks": [
+    {
+      "taskId": "T-001",
+      "summary": "기초 환경 및 프로젝트 구조 세팅",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 4,
+      "urgency": 10,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-002",
+      "summary": "지도 API 연동 및 기본 지도 표시",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 5,
+      "urgency": 10,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-003",
+      "summary": "문화·예술 POI 데이터 모델 설계 및 임시 데이터 구축",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 4,
+      "urgency": 9,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-004",
+      "summary": "지도상 POI 마커 표시 및 요약 정보 제공",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 5,
+      "urgency": 9,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-005",
+      "summary": "POI 상세 정보 뷰 구현",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 5,
+      "urgency": 9,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-006",
+      "summary": "카테고리/필터 기능(기본형)",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 5,
+      "urgency": 7,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-007",
+      "summary": "반응형/모바일 최적화 UI",
+      "status": "BACKLOG",
+      "importance": "MUST",
+      "complexity": 6,
+      "urgency": 10,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    },
+    {
+      "taskId": "T-008",
+      "summary": "MVP용 임시 백엔드 또는 정적 데이터 관리",
+      "status": "BACKLOG",
+      "importance": "SHOULD",
+      "complexity": 4,
+      "urgency": 6,
+      "createdAt": "2025-12-15T05:17:50.484Z",
+      "updatedAt": "2025-12-15T05:17:50.484Z"
+    }
+  ]
+}

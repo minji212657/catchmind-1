@@ -1,0 +1,100 @@
+.map-overlay {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  padding: 0.75rem 1.1rem 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.map-overlay__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #111;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.map-overlay__time {
+  letter-spacing: 0.04em;
+}
+
+.map-overlay__status-icons {
+  display: flex;
+  gap: 0.35rem;
+  color: #111;
+}
+
+.map-overlay__search-card {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background-color: #fff;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+  min-height: 56px;
+}
+
+.map-overlay__search-placeholder {
+  flex: 1;
+  color: #9aa0a8;
+}
+
+.map-overlay__divider {
+  width: 1px;
+  height: 1.4rem;
+  background-color: rgba(148, 163, 184, 0.4);
+}
+
+.map-overlay__date {
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: #006ce6;
+  cursor: pointer;
+}
+
+.map-overlay__chips {
+  pointer-events: auto;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.map-overlay__chip {
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: #5f656f;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  min-height: 38px;
+}
+
+.map-overlay__chip--active {
+  background-color: #111;
+  color: #fff;
+}
+
+.map-overlay__chip-count {
+  font-size: 0.78rem;
+  color: inherit;
+  opacity: 0.85;
+}

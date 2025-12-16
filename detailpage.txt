@@ -1,0 +1,175 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  Home,
+  Search,
+  Bookmark,
+  Share2,
+  Star,
+  MapPin,
+  Clock,
+  CheckSquare,
+  Info,
+} from "lucide-react";
+
+export default function ExhibitionDetailScreen() {
+  return (
+    <div className="max-w-sm mx-auto bg-white min-h-screen flex flex-col">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2">
+          <ChevronLeft />
+          <Home />
+        </div>
+        <div className="flex gap-3">
+          <Search />
+          <Bookmark />
+          <Share2 />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto pb-28">
+        {/* Title Section */}
+        <div className="px-4 py-2">
+          <h1 className="text-lg font-bold leading-snug">
+            바스키아 : 과거와 미래를 잇는 상징적 기호들
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">전체 관람가</p>
+          <div className="flex items-center text-sm mt-2">
+            <Star className="w-4 h-4 text-yellow-400 mr-1" />
+            <span className="font-medium">4.8</span>
+            <span className="mx-1">·</span>
+            <span className="text-gray-600">리뷰 242개</span>
+          </div>
+        </div>
+
+        <div className="border-t" />
+
+        {/* Info */}
+        <div className="px-4 py-3 space-y-2 text-sm">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-gray-500" />
+            <span>동대문 디자인 플라자 전시 1관</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4 text-gray-500" />
+            <span>2025.09.23 ~ 2026.01.31 · 09:00 - 22:00</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-medium">₩</span>
+            <span>성인 24,000 · 어린이 청소년 17,000</span>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex justify-around border-y text-sm">
+          {['상품 상세', '가격', '할인 정보', '이용 안내', '장소'].map((tab) => (
+            <button
+              key={tab}
+              className={`py-3 ${tab === '가격' ? 'font-bold border-b-2 border-black' : 'text-gray-500'}`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Image */}
+        <img
+          src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b"
+          alt="poster"
+          className="w-full"
+        />
+
+        <div className="px-4 py-3">
+          <Button variant="outline" className="w-full rounded-xl">
+            상품 상세 자세히보기 ▾
+          </Button>
+        </div>
+
+        {/* Price Card */}
+        <Card className="mx-4 rounded-2xl">
+          <CardContent className="p-4 text-sm space-y-2">
+            <div className="flex justify-between">
+              <span>성인 입장권</span>
+              <span className="font-semibold">24,000원</span>
+            </div>
+            <div className="flex justify-between text-gray-600">
+              <span>어린이/청소년 입장권</span>
+              <span>17,000원</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="px-4 py-3 text-xs text-gray-500">
+          특정 기간, 특정 공연에만 판매하는 가격이 있으니 예매 전
+          [가격 전체 보기]를 눌러 확인해주세요.
+        </div>
+
+        <div className="px-4">
+          <Button variant="outline" className="w-full rounded-xl">
+            가격 전체보기
+          </Button>
+        </div>
+
+        {/* Discount */}
+        <div className="px-4 py-5 text-sm">
+          <h2 className="font-bold mb-2">할인정보</h2>
+          <p className="font-medium mb-1">[평일 오전 관람 할인 이벤트]</p>
+          <ul className="text-xs text-gray-600 space-y-1">
+            <li>· 진행기간: 2025.10.20 ~ 2025.12.21</li>
+            <li>· 입장가능시간: 평일 10:00 ~ 12:00</li>
+            <li>· 평일 오전 20% 할인 성인 19,200원</li>
+            <li>· BC카드 평일 오전 30% 할인</li>
+          </ul>
+        </div>
+
+        {/* Cancel Policy */}
+        <div className="px-4 py-5 text-sm space-y-3">
+          <h2 className="font-bold">취소 및 환불 규정</h2>
+          <p className="text-gray-600">
+            예매 취소 조건보다 취소 수수료 규정이 우선 적용됩니다.
+          </p>
+          <div className="flex justify-between items-center bg-gray-50 rounded-xl p-3">
+            <span>취소기간 내 취소 시</span>
+            <span className="text-red-500 font-semibold">티켓금액의 10%</span>
+          </div>
+
+          <h3 className="font-semibold">예매 취소 조건</h3>
+          <p className="text-gray-600">
+            예매 후 7일 이내 취소 시 티켓 금액 전액이 환불됩니다.
+          </p>
+        </div>
+
+        {/* Accordions */}
+        <div className="border-t">
+          <div className="flex items-center justify-between px-4 py-4">
+            <div className="flex items-center gap-2">
+              <CheckSquare className="w-4 h-4" />
+              <span className="font-medium">예매 안내 사항</span>
+            </div>
+            <ChevronLeft className="rotate-180" />
+          </div>
+          <div className="flex items-center justify-between px-4 py-4 border-t">
+            <div className="flex items-center gap-2">
+              <Info className="w-4 h-4" />
+              <span className="font-medium">상품 · 기획사 · 판매자 정보</span>
+            </div>
+            <ChevronLeft className="rotate-180" />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-sm bg-white border-t px-4 py-3">
+        <div className="flex gap-3 items-center">
+          <Bookmark />
+          <Button className="flex-1 bg-orange-500 text-white rounded-xl py-6 text-lg">
+            예매하기
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

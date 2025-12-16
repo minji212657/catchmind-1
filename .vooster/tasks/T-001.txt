@@ -1,0 +1,29 @@
+# 기초 환경 및 프로젝트 구조 세팅
+
+**Task ID:** T-001
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 4/10
+**Urgency:** 10/10
+**Dependencies:** None
+
+## Description
+
+### 요구사항
+- 모바일 웹 최적화된 프론트엔드 환경 구축
+- React 및 Vite 기반 개발 환경 설정
+- 지도 API 연동을 고려한 폴더 구조 설계
+### 구현 세부사항
+- React 18, Vite 4 사용
+- 프로젝트 구조: src/{components, pages, services, assets}
+- ESLint, Prettier, Husky 설정
+- GitHub Actions CI 구성
+### 테스트 전략
+- 개발 서버 정상 실행 확인
+- 빌드 후 아티팩트 생성 및 배포 테스트
+- 폴더 구조 및 설정 파일 검증
+
+---
+
+**Created:** 2025-12-15T05:17:50.484Z
+**Updated:** 2025-12-15T05:17:50.484Z

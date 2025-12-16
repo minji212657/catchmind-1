@@ -1,0 +1,65 @@
+.poi-card {
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background-color: #fff;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.poi-card__badge-group {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.poi-card__badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.poi-card__badge--accent {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+.poi-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.poi-card__address {
+  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.poi-card__meta {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.poi-card__meta dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 0.06em;
+}
+
+.poi-card__meta dd {
+  margin: 0.15rem 0 0;
+  color: #0f172a;
+  font-weight: 600;
+}

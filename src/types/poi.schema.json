@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LifestylePoiList",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "category",
+      "description",
+      "address",
+      "lat",
+      "lng",
+      "openHours",
+      "closedDays",
+      "isFree",
+      "isPaid",
+      "reservable",
+      "reservationType"
+    ],
+    "properties": {
+      "id": { "type": "string" },
+      "name": { "type": "string" },
+      "category": {
+        "type": "string",
+        "enum": ["exhibition", "performance", "gallery", "popup", "class", "wineBar", "walk", "cafe"]
+      },
+      "description": { "type": "string" },
+      "address": { "type": "string" },
+      "lat": { "type": "number" },
+      "lng": { "type": "number" },
+      "openHours": { "type": "string" },
+      "closedDays": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "isFree": { "type": "boolean" },
+      "isPaid": { "type": "boolean" },
+      "reservable": { "type": "boolean" },
+      "reservationType": {
+        "type": "string",
+        "enum": ["FREE_RESERVATION", "TICKETING", "NONE"]
+      },
+      "endDate": { "type": "string", "format": "date" },
+      "durationMinutes": { "type": "number" },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "sessions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["time", "capacity", "status", "price"],
+          "properties": {
+            "time": { "type": "string" },
+            "capacity": { "type": "number" },
+            "status": {
+              "type": "string",
+              "enum": ["available", "soldOut", "closed"]
+            },
+            "price": { "type": "number" }
+          }
+        }
+      },
+      "entryMethod": {
+        "type": "string",
+        "enum": ["QR", "reservationCode"]
+      },
+      "images": {
+        "type": "array",
+        "items": { "type": "string", "format": "uri" }
+      },
+      "dataSource": {
+        "type": "string",
+        "enum": ["public", "partner", "manual"]
+      }
+    },
+    "additionalProperties": false
+  }
+}

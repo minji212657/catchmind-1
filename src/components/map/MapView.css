@@ -1,0 +1,59 @@
+.map-view {
+  position: relative;
+  background-color: #0f172a;
+  padding: 1.25rem;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 280px;
+  color: #f8fafc;
+}
+
+.map-view__canvas {
+  width: 100%;
+  height: 320px;
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent);
+}
+
+.map-view__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.82);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.map-view__overlay--error {
+  color: #fecaca;
+}
+
+/* Kakao InfoWindow custom style */
+.poi-infowindow {
+  background-color: #0f172a;
+  color: #fff;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.35);
+}
+
+.poi-infowindow strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.poi-infowindow span {
+  font-size: 0.75rem;
+  color: #cbd5f5;
+}
+
+@media (min-width: 768px) {
+  .map-view {
+    min-height: 320px;
+  }
+}

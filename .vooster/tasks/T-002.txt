@@ -1,0 +1,27 @@
+# 지도 API 연동 및 기본 지도 표시
+
+**Task ID:** T-002
+**Status:** BACKLOG
+**Importance:** MUST
+**Complexity:** 5/10
+**Urgency:** 10/10
+**Dependencies:** T-001
+
+## Description
+
+### 요구사항
+- Kakao Map 또는 Google Maps API 연동
+- 모바일 브라우저에서 지도 렌더링
+### 구현 세부사항
+- Kakao Map JS SDK 설치와 API 키 환경변수 관리
+- Map 컴포넌트 생성하여 초기 좌표 설정
+- 비동기 로딩 및 에러 핸들링 구현
+### 테스트 전략
+- 지도가 올바른 위치에 표시되는지 확인
+- 모바일 터치 줌 및 드래그 동작 테스트
+- API 호출 성공 여부 및 에러 메시지 검증
+
+---
+
+**Created:** 2025-12-15T05:17:50.484Z
+**Updated:** 2025-12-15T05:17:50.484Z
