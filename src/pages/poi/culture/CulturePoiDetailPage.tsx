@@ -17,6 +17,9 @@ import mapVisualizationData from '../../../../Map Visualization Data.json'
 import { fetchPoiById } from '@/services/poi/poiApi'
 import { poiService } from '@/services/poi/poiService'
 import type { LifestylePoi, PoiCategory } from '@/types/poi'
+import { ReservationSelectScreen, type ReservationSelectionResult } from '@/components/poi/reservation/ReservationSelectScreen'
+import { TicketPaymentScreen } from '@/components/poi/reservation/TicketPaymentScreen'
+import { ReservationSuccessScreen, type SuccessSummary } from '@/components/poi/reservation/ReservationSuccessScreen'
 import { getMockRating, mapCategoryLabel } from '@/utils/poi'
 
 import './CulturePoiDetailPage.css'
@@ -30,6 +33,12 @@ export function CulturePoiDetailPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(1)
   const [detailExpanded, setDetailExpanded] = useState(false)
   const [activeTab, setActiveTab] = useState(DETAIL_TABS[0])
+  const [reservationStage, setReservationStage] = useState<'selection' | 'payment' | 'success' | null>(null)
+  const [selectedReservationDate, setSelectedReservationDate] = useState<Date | null>(null)
+  const [adultTicketCount, setAdultTicketCount] = useState(1)
+  const [youthTicketCount, setYouthTicketCount] = useState(0)
+  const [ticketSelection, setTicketSelection] = useState<ReservationSelectionResult | null>(null)
+  const [successSummary, setSuccessSummary] = useState<SuccessSummary | null>(null)
   const carouselTrackRef = useRef<HTMLDivElement | null>(null)
   const carouselContainerRef = useRef<HTMLDivElement | null>(null)
   const nearbyRestaurants = useMemo<NearbyRestaurant[]>(() => {
@@ -49,6 +58,18 @@ export function CulturePoiDetailPage() {
         .slice(0, 3)
     )
   }, [poi])
+  const successRecommendations = useMemo(() => {
+    return nearbyRestaurants.map(place => {
+      const locationArea = place.address.split(' ')[1] ?? place.address
+      const placeType = place.type ?? mapCategoryLabel(place.category as PoiCategory)
+      return {
+        id: place.id,
+        name: place.name,
+        rating: getExperienceRating(place.name),
+        meta: `${placeType} · ${locationArea}`,
+      }
+    })
+  }, [nearbyRestaurants])
 
   useEffect(() => {
     if (!poiId) {
@@ -114,6 +135,7 @@ export function CulturePoiDetailPage() {
   const galleryImages: (string | undefined)[] = Array.from({ length: 5 }, (_, idx) => poi.images?.[idx])
   const basePrice = poi.sessions?.[0]?.price ?? 24000
   const childPrice = Math.round((basePrice * 0.7) / 100) * 100
+  const discountedAdultPrice = Math.round((basePrice * 0.7) / 100) * 100
   const priceRows = [
     { label: '성인', price: basePrice },
     { label: '어린이·청소년', price: childPrice || undefined },
@@ -139,6 +161,63 @@ export function CulturePoiDetailPage() {
     const offset = carouselTrackRef.current.scrollLeft
     const index = Math.round(offset / containerWidth) + 1
     setCurrentImageIndex(Math.min(Math.max(index, 1), totalImages))
+  }
+
+  const handleOpenReservation = () => {
+    setReservationStage('selection')
+  }
+
+  const handleReservationClose = () => {
+    setReservationStage(null)
+    setTicketSelection(null)
+    setSuccessSummary(null)
+  }
+
+  const handleProceedToPayment = (result: ReservationSelectionResult) => {
+    setSelectedReservationDate(result.selectedDate)
+    setAdultTicketCount(result.adultCount)
+    setYouthTicketCount(result.youthCount)
+    setTicketSelection(result)
+    setReservationStage('payment')
+  }
+
+  const handlePaymentBack = () => {
+    setReservationStage('selection')
+  }
+
+  const formatSummaryDate = (date: Date | null) => {
+    if (!date) {
+      return '날짜 미정'
+    }
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}.${month}.${day}`
+  }
+
+  const handlePaymentComplete = () => {
+    if (!poi) {
+      setReservationStage(null)
+      return
+    }
+    const dateText = formatSummaryDate(selectedReservationDate)
+    const timeText = poi.openHours || '시간 미정'
+    const adultLabel = adultTicketCount ? `성인 ${adultTicketCount}명` : ''
+    const youthLabel = youthTicketCount ? `청소년 ${youthTicketCount}명` : ''
+    const peopleText = [adultLabel, youthLabel].filter(Boolean).join(' · ') || '인원 미정'
+    setSuccessSummary({
+      title: poi.name,
+      dateText,
+      timeText,
+      peopleText,
+    })
+    setReservationStage('success')
+  }
+
+  const handleSuccessClose = () => {
+    setReservationStage(null)
+    setTicketSelection(null)
+    setSuccessSummary(null)
   }
 
   return (
@@ -378,10 +457,47 @@ export function CulturePoiDetailPage() {
         <button type="button" className="poi-detail__bookmark">
           <Bookmark size={18} />
         </button>
-        <button type="button" className="poi-detail__primary">
-          예매하기
+        <button type="button" className="poi-detail__primary" onClick={handleOpenReservation}>
+          이용 가능 여부 확인
         </button>
       </footer>
+      {reservationStage === 'selection' && (
+        <ReservationSelectScreen
+          selectedDate={selectedReservationDate}
+          setSelectedDate={setSelectedReservationDate}
+          adultCount={adultTicketCount}
+          setAdultCount={setAdultTicketCount}
+          youthCount={youthTicketCount}
+          setYouthCount={setYouthTicketCount}
+          adultPrice={basePrice}
+          youthPrice={childPrice}
+          discountAdultPrice={discountedAdultPrice}
+          onClose={handleReservationClose}
+          onProceedPayment={handleProceedToPayment}
+        />
+      )}
+      {reservationStage === 'payment' && ticketSelection && (
+        <div className="reservation-screen-overlay reservation-screen-overlay--light">
+          <TicketPaymentScreen
+            adult={ticketSelection.adultCount}
+            youth={ticketSelection.youthCount}
+            totalPrice={ticketSelection.totalPrice}
+            visitDate={ticketSelection.selectedDate}
+            onBack={handlePaymentBack}
+            onPay={handlePaymentComplete}
+          />
+        </div>
+      )}
+      {reservationStage === 'success' && successSummary && (
+        <div className="reservation-screen-overlay reservation-screen-overlay--light">
+          <ReservationSuccessScreen
+            summary={successSummary}
+            recommendations={successRecommendations}
+            onClose={handleSuccessClose}
+            onSelectRecommendation={id => navigate(`/poi/${id}`)}
+          />
+        </div>
+      )}
     </section>
   )
 }
