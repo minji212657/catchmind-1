@@ -1,12 +1,12 @@
 import { ArrowLeft, Calendar, ChevronDown } from 'lucide-react'
 
-import type { LifestylePoi, PoiCategory } from '@/types/poi'
-import { calculateDistanceInKm, formatDistanceMeters } from '@/utils/geo'
-import { getMockRating, mapCategoryLabel } from '@/utils/poi'
 import type { CategoryChip } from '@/components/map/MapOverlay'
 import { CultureCard } from '@/components/poi/cards/CultureCard'
 import { RestaurantCard } from '@/components/poi/cards/RestaurantCard'
 import type { ReservationDate } from '@/components/poi/cards/RestaurantCard'
+import type { LifestylePoi, PoiCategory } from '@/types/poi'
+import { calculateDistanceInKm, formatDistanceMeters } from '@/utils/geo'
+import { getMockRating, mapCategoryLabel } from '@/utils/poi'
 
 import './PoiBottomSheet.css'
 

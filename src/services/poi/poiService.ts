@@ -1,6 +1,6 @@
-import mapVisualizationData from '../../../Map Visualization Data.json'
-
 import type { LifestylePoi, PoiCategory, ReservationType } from '@/types/poi'
+
+import mapVisualizationData from '../../../Map Visualization Data.json'
 
 type JsonRecord = {
   id?: string
