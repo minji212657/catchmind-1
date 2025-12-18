@@ -45,6 +45,7 @@ export function TicketPaymentScreen({ adult = 0, youth = 0, totalPrice = 0, visi
     {
       id: 'card-1',
       brandLogo: tossPayLogo,
+      brandLabel: 'toss pay',
       cardCompany: '토스 페이',
       cardType: '체크',
       cardNumber: '하나(외환) (140*)',
