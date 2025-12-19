@@ -441,28 +441,27 @@ function buildReservationCardsFromList(
       })
     }
 
-    if (entry.cultureReservation) {
-      const poi = entry.cultureReservation.poiId
-        ? pois.find(item => item.id === entry.cultureReservation.poiId)
+    const cultureReservation = entry.cultureReservation
+    if (cultureReservation) {
+      const poi = cultureReservation.poiId
+        ? pois.find(item => item.id === cultureReservation.poiId)
         : undefined
       const area = poi?.address.split(' ')[1] ?? poi?.address ?? '지역 정보 없음'
       const category = poi?.type ?? '문화·예술'
-      const parsedDate = parseSummaryDate(entry.cultureReservation.summary.dateText)
+      const parsedDate = parseSummaryDate(cultureReservation.summary.dateText)
 
       cards.push({
         id: buildReservationKey(entry),
         title:
-          entry.cultureReservation.poiName ??
-          poi?.name ??
-          entry.cultureReservation.summary.title,
+          cultureReservation.poiName ?? poi?.name ?? cultureReservation.summary.title,
         area,
         category,
         poiCategory: 'culture',
         isOnline: false,
         date: parsedDate?.toISOString() ?? new Date().toISOString(),
-        dateLabel: entry.cultureReservation.summary.dateText,
-        time: entry.cultureReservation.summary.timeText,
-        people: entry.cultureReservation.summary.peopleText,
+        dateLabel: cultureReservation.summary.dateText,
+        time: cultureReservation.summary.timeText,
+        people: cultureReservation.summary.peopleText,
         status: 'upcoming',
         anchorLat: poi?.lat,
         anchorLng: poi?.lng,
