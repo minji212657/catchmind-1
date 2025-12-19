@@ -16,7 +16,12 @@ type RadiusFilter = 100 | 500 | 3000
 const radiusOptions: RadiusFilter[] = [100, 500, 3000]
 
 const locationFilterCategory = (state: unknown): CategoryFilter | null => {
-  if (state && typeof state === 'object' && 'filterCategory' in state && state.filterCategory) {
+  if (
+    state &&
+    typeof state === 'object' &&
+    'filterCategory' in state &&
+    state.filterCategory
+  ) {
     return state.filterCategory as CategoryFilter
   }
   return null
@@ -33,7 +38,9 @@ export function HomePage() {
   const navigate = useNavigate()
 
   const anchorPoi = allPois[0]
-  const referencePoint = anchorPoi ? { lat: anchorPoi.lat, lng: anchorPoi.lng } : undefined
+  const referencePoint = anchorPoi
+    ? { lat: anchorPoi.lat, lng: anchorPoi.lng }
+    : undefined
 
   const filteredPois = useMemo(
     () =>
@@ -56,9 +63,21 @@ export function HomePage() {
     )
 
     return [
-      { label: '전체', value: 'all' as CategoryFilter, count: counts.all ?? allPois.length },
-      { label: '미식', value: 'restaurant' as CategoryFilter, count: counts.restaurant ?? 0 },
-      { label: '문화·예술', value: 'culture' as CategoryFilter, count: counts.culture ?? 0 },
+      {
+        label: '전체',
+        value: 'all' as CategoryFilter,
+        count: counts.all ?? allPois.length,
+      },
+      {
+        label: '미식',
+        value: 'restaurant' as CategoryFilter,
+        count: counts.restaurant ?? 0,
+      },
+      {
+        label: '문화·예술',
+        value: 'culture' as CategoryFilter,
+        count: counts.culture ?? 0,
+      },
     ]
   }, [allPois])
 
@@ -139,9 +158,7 @@ export function HomePage() {
           radiusLabel={formatRadius(radiusFilter)}
           onRadiusChange={handleRadiusCycle}
           sheetState={sheetState}
-          onToggleSheetState={() => {
-            setSheetState(prev => (prev === 'folded' ? 'unfolded' : 'folded'))
-          }}
+          onToggleSheetState={handleToggleSheetState}
           categoryFilter={categoryFilter}
           onCategoryChange={value => setCategoryFilter(value)}
           categories={categories}
@@ -149,7 +166,6 @@ export function HomePage() {
           autoUnfold={Boolean(locationFilterCategory(locationState))}
         />
       </section>
-
     </main>
   )
 }
@@ -173,7 +189,8 @@ function applyFilters(pois: LifestylePoi[], filters: FilterOptions) {
     }
 
     if (anchor && radius) {
-      const distanceMeters = calculateDistanceInKm(anchor.lat, anchor.lng, poi.lat, poi.lng) * 1000
+      const distanceMeters =
+        calculateDistanceInKm(anchor.lat, anchor.lng, poi.lat, poi.lng) * 1000
       if (distanceMeters > radius) {
         return false
       }

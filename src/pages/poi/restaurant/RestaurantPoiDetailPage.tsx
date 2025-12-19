@@ -13,12 +13,12 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { RestaurantBottomSheet } from '@/components/poi/RestaurantBottomSheet'
 import {
   RestaurantReserveBottomSheet,
   type RestaurantReservationSelection,
   type SerializedRestaurantReservationSelection,
 } from '@/components/poi/reservation/RestaurantReserveBottomSheet'
+import { RestaurantBottomSheet } from '@/components/poi/RestaurantBottomSheet'
 import { fetchPoiById } from '@/services/poi/poiApi'
 import { poiService } from '@/services/poi/poiService'
 import type { LifestylePoi, PoiCategory } from '@/types/poi'
@@ -87,16 +87,16 @@ export function RestaurantPoiDetailPage() {
     }
     const baseLat = Number(poi.lat ?? '0')
     const baseLng = Number(poi.lng ?? '0')
-    return (
-      mapVisualizationData
-        .filter(entry => entry.category === 'culture')
-        .map((entry): NearbyRestaurant => ({
+    return mapVisualizationData
+      .filter(entry => entry.category === 'culture')
+      .map(
+        (entry): NearbyRestaurant => ({
           ...entry,
           distance: Math.hypot(baseLat - Number(entry.lat), baseLng - Number(entry.lng)),
-        }))
-        .sort((a, b) => a.distance - b.distance)
-        .slice(0, 3)
-    )
+        }),
+      )
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 3)
   }, [poi])
 
   if (isLoading) {
@@ -119,7 +119,10 @@ export function RestaurantPoiDetailPage() {
   }
 
   const { rating, reviews } = getMockRating(poi)
-  const galleryImages: (string | undefined)[] = Array.from({ length: 5 }, (_, idx) => poi.images?.[idx])
+  const galleryImages: (string | undefined)[] = Array.from(
+    { length: 5 },
+    (_, idx) => poi.images?.[idx],
+  )
   const totalImages = galleryImages.filter(Boolean).length || galleryImages.length
 
   const handleCarouselScroll = () => {
@@ -142,7 +145,9 @@ export function RestaurantPoiDetailPage() {
         ...selection,
         date: selection.date.toISOString(),
       }
-      navigate(`/poi/${poiId}/reservation/confirm`, { state: { selection: serializedSelection } })
+      navigate(`/poi/${poiId}/reservation/confirm`, {
+        state: { selection: serializedSelection },
+      })
     }
   }
 
@@ -171,7 +176,11 @@ export function RestaurantPoiDetailPage() {
       </header>
 
       <div className="poi-detail__scroll">
-        <div className="poi-detail__carousel" role="group" aria-label={`${poi.name} 이미지`}>
+        <div
+          className="poi-detail__carousel"
+          role="group"
+          aria-label={`${poi.name} 이미지`}
+        >
           <div
             className="poi-detail__carousel-track"
             ref={node => {
@@ -180,8 +189,16 @@ export function RestaurantPoiDetailPage() {
             onScroll={handleCarouselScroll}
           >
             {galleryImages.map((src, index) => (
-              <div key={`${poi.id}-carousel-${index}`} className="poi-detail__carousel-item" ref={index === 0 ? carouselContainerRef : undefined}>
-                {src ? <img src={src} alt={`${poi.name} 이미지 ${index + 1}`} /> : <div />}
+              <div
+                key={`${poi.id}-carousel-${index}`}
+                className="poi-detail__carousel-item"
+                ref={index === 0 ? carouselContainerRef : undefined}
+              >
+                {src ? (
+                  <img src={src} alt={`${poi.name} 이미지 ${index + 1}`} />
+                ) : (
+                  <div />
+                )}
               </div>
             ))}
           </div>
@@ -260,14 +277,22 @@ export function RestaurantPoiDetailPage() {
         <section className="poi-detail__tab-content" data-tab="홈">
           <div className="restaurant-home-section">
             <div className="restaurant-home-card restaurant-home-card--news">
-            <img className="restaurant-home-card__icon" src="/assets/notification.svg" alt="소식" />
+              <img
+                className="restaurant-home-card__icon"
+                src="/assets/notification.svg"
+                alt="소식"
+              />
               <div>
                 <p className="restaurant-home-card__title">소식</p>
                 <p className="restaurant-home-card__text">주말 영업시간 안내</p>
               </div>
             </div>
             <div className="restaurant-home-card restaurant-home-card--coupon">
-              <img className="restaurant-home-card__icon" src="/assets/coupon.svg" alt="쿠폰" />
+              <img
+                className="restaurant-home-card__icon"
+                src="/assets/coupon.svg"
+                alt="쿠폰"
+              />
               <div className="restaurant-home-card__content">
                 <p className="restaurant-home-card__title">점심 첫타임 30% 할인 쿠폰</p>
                 <p className="restaurant-home-card__text">매장에서 확인 후 사용</p>
@@ -298,7 +323,9 @@ export function RestaurantPoiDetailPage() {
                     <span className="restaurant-reservation__date">{slot.label}</span>
                     <span
                       className={`restaurant-reservation__status ${
-                        slot.status === '예약 가능' ? 'restaurant-reservation__status--available' : ''
+                        slot.status === '예약 가능'
+                          ? 'restaurant-reservation__status--available'
+                          : ''
                       }`}
                     >
                       {slot.status}
@@ -306,7 +333,10 @@ export function RestaurantPoiDetailPage() {
                   </button>
                 ))}
               </div>
-              <button type="button" className="poi-detail__outline-button restaurant-reservation__action">
+              <button
+                type="button"
+                className="poi-detail__outline-button restaurant-reservation__action"
+              >
                 예약 가능 날짜 찾기
               </button>
             </div>
@@ -334,7 +364,10 @@ export function RestaurantPoiDetailPage() {
                 <div className="restaurant-menu__thumb" />
               </article>
             ))}
-            <button type="button" className="poi-detail__outline-button restaurant-menu__cta">
+            <button
+              type="button"
+              className="poi-detail__outline-button restaurant-menu__cta"
+            >
               메뉴 전체 보기
             </button>
           </div>
@@ -349,7 +382,10 @@ export function RestaurantPoiDetailPage() {
                 <div key={`photo-${idx}`} className="poi-detail__photo-tile" />
               ))}
             </div>
-            <button type="button" className="poi-detail__outline-button poi-detail__gallery-cta">
+            <button
+              type="button"
+              className="poi-detail__outline-button poi-detail__gallery-cta"
+            >
               사진 213개 전체보기
             </button>
           </div>
@@ -375,7 +411,9 @@ export function RestaurantPoiDetailPage() {
                       <span className="poi-detail__review-author">김제헌</span>
                       <span className="poi-detail__review-date">2025.12.08</span>
                     </div>
-                    <p className="poi-detail__review-text">비프 웰링턴이랑 미트파이 최고입니다...정말 추천해요.</p>
+                    <p className="poi-detail__review-text">
+                      비프 웰링턴이랑 미트파이 최고입니다...정말 추천해요.
+                    </p>
                     <div className="poi-detail__review-rating">
                       <Star size={14} />
                       <strong>5.0</strong>
@@ -384,7 +422,10 @@ export function RestaurantPoiDetailPage() {
                 </article>
               ))}
             </div>
-            <button type="button" className="poi-detail__outline-button poi-detail__reviews-cta">
+            <button
+              type="button"
+              className="poi-detail__outline-button poi-detail__reviews-cta"
+            >
               리뷰 전체 보기
             </button>
           </div>
@@ -402,7 +443,8 @@ export function RestaurantPoiDetailPage() {
               {nearbyCulturePlaces.map(place => {
                 const locationArea = place.address.split(' ')[1] ?? place.address
                 const placeRating = getExperienceRating(place.name)
-                const placeType = place.type ?? mapCategoryLabel(place.category as PoiCategory)
+                const placeType =
+                  place.type ?? mapCategoryLabel(place.category as PoiCategory)
                 return (
                   <article
                     key={place.name}
@@ -442,8 +484,15 @@ export function RestaurantPoiDetailPage() {
         <div className="poi-detail__spacer" />
       </div>
 
-      <RestaurantBottomSheet onBookmark={() => {}} onPrimaryAction={() => setReserveSheetOpen(true)} />
-      <RestaurantReserveBottomSheet open={isReserveSheetOpen} onClose={() => setReserveSheetOpen(false)} onProceed={handleProceedReservation} />
+      <RestaurantBottomSheet
+        onBookmark={() => {}}
+        onPrimaryAction={() => setReserveSheetOpen(true)}
+      />
+      <RestaurantReserveBottomSheet
+        open={isReserveSheetOpen}
+        onClose={() => setReserveSheetOpen(false)}
+        onProceed={handleProceedReservation}
+      />
     </section>
   )
 }
