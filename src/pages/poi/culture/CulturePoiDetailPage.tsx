@@ -24,6 +24,7 @@ import { TicketPaymentScreen } from '@/components/poi/reservation/TicketPaymentS
 import { fetchPoiById } from '@/services/poi/poiApi'
 import { poiService } from '@/services/poi/poiService'
 import type { LifestylePoi, PoiCategory } from '@/types/poi'
+import { GAEvent, trackEvent } from '@/utils/ga'
 import { getMockRating, mapCategoryLabel } from '@/utils/poi'
 
 import mapVisualizationData from '../../../../Map Visualization Data.json'
@@ -51,6 +52,7 @@ export function CulturePoiDetailPage() {
   const [successSummary, setSuccessSummary] = useState<SuccessSummary | null>(null)
   const carouselTrackRef = useRef<HTMLDivElement | null>(null)
   const carouselContainerRef = useRef<HTMLDivElement | null>(null)
+  const hasTrackedDetailView = useRef(false)
   const nearbyRestaurants = useMemo<NearbyRestaurant[]>(() => {
     if (!poi) {
       return []
@@ -67,6 +69,18 @@ export function CulturePoiDetailPage() {
       )
       .sort((a, b) => a.distance - b.distance)
       .slice(0, 3)
+  }, [poi])
+
+  useEffect(() => {
+    if (!poi || hasTrackedDetailView.current) {
+      return
+    }
+    hasTrackedDetailView.current = true
+    trackEvent(GAEvent.VIEW_PLACE_POI_DETAIL, {
+      poi_id: poi.id,
+      poi_name: poi.name,
+      poi_category: poi.category,
+    })
   }, [poi])
   useEffect(() => {
     if (!poiId) {
@@ -218,6 +232,17 @@ export function CulturePoiDetailPage() {
     setReservationStage(null)
     setTicketSelection(null)
     setSuccessSummary(null)
+  }
+
+  const handleRecommendationSelect = (place: NearbyRestaurant) => {
+    trackEvent(GAEvent.CLICK_PLACE_POI, {
+      poi_id: place.id,
+      poi_name: place.name,
+      poi_category: place.category,
+      source: 'culture_detail_recommendation',
+      anchor_poi_id: poi?.id ?? '',
+    })
+    navigate(`/poi/${place.id}`)
   }
 
   return (
@@ -440,11 +465,11 @@ export function CulturePoiDetailPage() {
                     className="poi-detail__experience-card"
                     role="button"
                     tabIndex={0}
-                    onClick={() => navigate(`/poi/${place.id}`)}
+                    onClick={() => handleRecommendationSelect(place)}
                     onKeyDown={event => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault()
-                        navigate(`/poi/${place.id}`)
+                        handleRecommendationSelect(place)
                       }
                     }}
                   >

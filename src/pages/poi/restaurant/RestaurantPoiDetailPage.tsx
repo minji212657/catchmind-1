@@ -22,6 +22,7 @@ import { RestaurantBottomSheet } from '@/components/poi/RestaurantBottomSheet'
 import { fetchPoiById } from '@/services/poi/poiApi'
 import { poiService } from '@/services/poi/poiService'
 import type { LifestylePoi, PoiCategory } from '@/types/poi'
+import { GAEvent, trackEvent } from '@/utils/ga'
 import { getMockRating, mapCategoryLabel } from '@/utils/poi'
 
 import mapVisualizationData from '../../../../Map Visualization Data.json'
@@ -39,6 +40,8 @@ export function RestaurantPoiDetailPage() {
   const carouselTrackRef = useRef<HTMLDivElement | null>(null)
   const carouselContainerRef = useRef<HTMLDivElement | null>(null)
   const [isReserveSheetOpen, setReserveSheetOpen] = useState(false)
+  const hasTrackedDetailView = useRef(false)
+  const hasTrackedModuleView = useRef(false)
 
   useEffect(() => {
     if (!poiId) {
@@ -99,6 +102,31 @@ export function RestaurantPoiDetailPage() {
       .slice(0, 3)
   }, [poi])
 
+  useEffect(() => {
+    if (!poi || hasTrackedDetailView.current) {
+      return
+    }
+    hasTrackedDetailView.current = true
+    trackEvent(GAEvent.VIEW_DINING_DETAIL, {
+      poi_id: poi.id,
+      poi_name: poi.name,
+      poi_category: poi.category,
+    })
+  }, [poi])
+
+  useEffect(() => {
+    if (!poi || hasTrackedModuleView.current) {
+      return
+    }
+    hasTrackedModuleView.current = true
+    trackEvent(GAEvent.VIEW_PLACE_POI_MODULE, {
+      anchor_poi_id: poi.id,
+      anchor_category: poi.category,
+      recommend_count: nearbyCulturePlaces.length,
+      source: 'restaurant_detail',
+    })
+  }, [poi, nearbyCulturePlaces.length])
+
   if (isLoading) {
     return (
       <section className="poi-detail poi-detail--empty">
@@ -149,6 +177,29 @@ export function RestaurantPoiDetailPage() {
         state: { selection: serializedSelection },
       })
     }
+  }
+
+  const handleExternalExit = (action: string) => {
+    if (!poi) {
+      return
+    }
+    trackEvent(GAEvent.EXTERNAL_APP_EXIT, {
+      poi_id: poi.id,
+      poi_name: poi.name,
+      poi_category: poi.category,
+      action,
+    })
+  }
+
+  const handleRecommendationSelect = (place: NearbyRestaurant) => {
+    trackEvent(GAEvent.CLICK_PLACE_POI, {
+      poi_id: place.id,
+      poi_name: place.name,
+      poi_category: place.category,
+      source: 'restaurant_detail_recommendation',
+      anchor_poi_id: poi?.id ?? '',
+    })
+    navigate(`/poi/${place.id}`)
   }
 
   return (
@@ -212,7 +263,11 @@ export function RestaurantPoiDetailPage() {
             <div className="restaurant-info-title-group">
               <div className="poi-detail__info-title">{poi.name}</div>
             </div>
-            <button type="button" className="restaurant-info-call">
+            <button
+              type="button"
+              className="restaurant-info-call"
+              onClick={() => handleExternalExit('call')}
+            >
               <Phone size={16} />
               전화
             </button>
@@ -451,11 +506,11 @@ export function RestaurantPoiDetailPage() {
                     className="poi-detail__experience-card"
                     role="button"
                     tabIndex={0}
-                    onClick={() => navigate(`/poi/${place.id}`)}
+                    onClick={() => handleRecommendationSelect(place)}
                     onKeyDown={event => {
                       if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault()
-                        navigate(`/poi/${place.id}`)
+                        handleRecommendationSelect(place)
                       }
                     }}
                   >

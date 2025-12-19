@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import type { PoiCategory } from '@/types/poi'
+import { GAEvent, trackEvent } from '@/utils/ga'
 import { mapCategoryLabel } from '@/utils/poi'
 
 import mapVisualizationData from '../../../../Map Visualization Data.json'
@@ -55,6 +56,7 @@ export function ReservationSuccessScreen({
   onShareTicket,
 }: SuccessScreenProps) {
   const navigate = useNavigate()
+  const hasTrackedConversion = useRef(false)
   const recommendations = useMemo<Recommendation[]>(() => {
     const targetCategory = basePoi.category === 'restaurant' ? 'culture' : 'restaurant'
     const targetPlaces = mapVisualizationData
@@ -89,6 +91,17 @@ export function ReservationSuccessScreen({
   const footerButtonLabel =
     basePoi.category === 'restaurant' ? '초대장 보내기' : '공유하기'
 
+  useEffect(() => {
+    if (hasTrackedConversion.current) {
+      return
+    }
+    hasTrackedConversion.current = true
+    trackEvent(GAEvent.PLACE_POI_CONVERSION, {
+      poi_id: basePoi.id,
+      poi_category: basePoi.category,
+    })
+  }, [basePoi])
+
   const handleDetailClick = () => {
     if (basePoi.category === 'culture' && myDiningPayload) {
       navigate('/my-dining', { state: { cultureReservation: myDiningPayload } })
@@ -116,6 +129,16 @@ export function ReservationSuccessScreen({
       return
     }
     onClose()
+  }
+
+  const handleSelectRecommendation = (id: string) => {
+    trackEvent(GAEvent.CLICK_PLACE_POI, {
+      poi_id: id,
+      source: 'reservation_success_recommendation',
+      anchor_poi_id: basePoi.id,
+      anchor_poi_category: basePoi.category,
+    })
+    onSelectRecommendation(id)
   }
 
   return (
@@ -177,11 +200,11 @@ export function ReservationSuccessScreen({
                 className="poi-detail__experience-card"
                 role="button"
                 tabIndex={0}
-                onClick={() => onSelectRecommendation(item.id)}
+                onClick={() => handleSelectRecommendation(item.id)}
                 onKeyDown={event => {
                   if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault()
-                    onSelectRecommendation(item.id)
+                    handleSelectRecommendation(item.id)
                   }
                 }}
               >
